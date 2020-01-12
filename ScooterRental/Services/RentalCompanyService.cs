@@ -23,7 +23,18 @@ namespace ScooterRental.Services
 
         public decimal CalculateIncome(int? year, bool includeNotCompletedRentals)
         {
-            throw new NotImplementedException();
+            IEnumerable<RentalOrder> orders = rentalOrders;
+            if (year.HasValue)
+            {
+                // Income is counted for year when rent has started
+                orders = orders.Where(o => o.DateFrom.Year == year);
+            }
+            if (!includeNotCompletedRentals)
+            {
+                orders = orders.Where(o => o.DateTo.HasValue);
+            }
+
+            return orders.Aggregate(0m, (income, order) => income + order.CalculateRentalPrice());
         }
 
         public decimal EndRent(string id)
@@ -36,8 +47,7 @@ namespace ScooterRental.Services
                 order.DateTo = DateTime.UtcNow;
                 scooter.IsRented = false;
 
-                // TODO: calculate rental price
-                return 0m;
+                return order.CalculateRentalPrice();
             }
             else
             {
