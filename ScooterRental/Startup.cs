@@ -18,6 +18,7 @@ namespace ScooterRental
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IScooterService, ScooterService>();
+            services.AddSingleton<IRentalCompany, RentalCompanyService>();
             services.AddControllers();
         }
 
