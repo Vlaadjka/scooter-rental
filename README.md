@@ -55,7 +55,8 @@ Response:
 Request body:
 ```
 {
-    "id": "ninebot123"
+    "id": "ninebot123",
+    "pricePerMinute": 0.07
 }
 ```
 Empty `200` response.
